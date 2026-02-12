@@ -1,26 +1,82 @@
-from database import init_db
-
-init_db()
-
-from ai_engine import ask_ai
-
-from flask import Flask, render_template, request, redirect
+import os
 import sqlite3
 import datetime
-import os
-import subprocess
+
+from flask import Flask, render_template, request, redirect
+
+from ai_engine import ask_ai
+from database import init_db
 
 
-base_dir = os.path.dirname(os.path.abspath(__file__))
+# Initialize Database
+init_db()
+
+
+# App Setup
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(
     __name__,
-    template_folder=os.path.join(base_dir, "templates"),
-    static_folder=os.path.join(base_dir, "static")
+    template_folder=os.path.join(BASE_DIR, "templates"),
+    static_folder=os.path.join(BASE_DIR, "static")
 )
 
 
-@app.route("/ai", methods=["GET","POST"])
+# ---------- Database Helper ----------
+
+def get_db():
+    return sqlite3.connect("arc.db")
+
+
+# ---------- Routes ----------
+
+
+# Home Page (Stranger Design)
+@app.route("/")
+def home():
+    return render_template("stranger.html")
+
+
+# Learning Page
+@app.route("/learn", methods=["GET", "POST"])
+def learn():
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    if request.method == "POST":
+
+        topic = request.form["topic"]
+        status = request.form["status"]
+        note = request.form["note"]
+
+        today = str(datetime.date.today())
+
+        cur.execute("""
+            INSERT INTO learning (topic, status, note, date)
+            VALUES (?, ?, ?, ?)
+        """, (topic, status, note, today))
+
+        conn.commit()
+        conn.close()
+
+        return redirect("/learn")
+
+
+    cur.execute("""
+        SELECT topic, status, note, date
+        FROM learning
+        ORDER BY id DESC
+    """)
+
+    data = cur.fetchall()
+    conn.close()
+
+    return render_template("learn.html", data=data)
+
+
+# AI Page
+@app.route("/ai", methods=["GET", "POST"])
 def ai():
 
     answer = ""
@@ -32,64 +88,14 @@ def ai():
 
     return render_template("ai.html", answer=answer)
 
-@app.route("/dashboard")
-def dashboard():
-
-    subprocess.Popen(["python", "dashboard.py"])
-
-    return "<h2>Dashboard Opened</h2><a href='/'>Back</a>"
 
 
-
-# Database connect function
-def get_db():
-    return sqlite3.connect("arc.db")
-
-
-@app.route("/", methods=["GET","POST"])
-def learn():
-
-    conn = get_db()
-    cur = conn.cursor()
-
-    # Jab form submit ho
-    if request.method == "POST":
-
-        topic = request.form["topic"]
-        status = request.form["status"]
-        note = request.form["note"]
-
-        today = str(datetime.date.today())
-
-        # Data insert
-        cur.execute("""
-        INSERT INTO learning (topic,status,note,date)
-        VALUES (?,?,?,?)
-        """, (topic,status,note,today))
-
-        conn.commit()
-        conn.close()
-
-        return redirect("/")
-
-
-    # Data read
-    cur.execute("""
-    SELECT topic,status,note,date
-    FROM learning
-    ORDER BY id DESC
-    """)
-
-    data = cur.fetchall()
-    conn.close()
-
-    return render_template("learn.html", data=data)
-
+# ---------- Run Server ----------
 
 if __name__ == "__main__":
+
     print("ARC Learning System Running...")
-    import os
 
-port = int(os.environ.get("PORT", 10000))
-app.run(host="0.0.0.0", port=port)
+    port = int(os.environ.get("PORT", 10000))
 
+    app.run(host="0.0.0.0", port=port, debug=True)
