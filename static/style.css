@@ -147,3 +147,25 @@ body {
   font-size: 26px;
   display: block;
 }
+/* RESPONSIVE */
+
+@media (max-width:768px){
+
+  .text-left h1{
+    font-size:32px;
+  }
+
+  .subtitle{
+    font-size:14px;
+  }
+
+  .menu{
+    gap:12px;
+  }
+
+  canvas{
+    width:95vw !important;
+    height:auto !important;
+  }
+
+}

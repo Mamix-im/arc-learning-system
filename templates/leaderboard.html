@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Leaderboard</h2>
+
+<table border="1">
+
+<tr>
+<th>Name</th>
+<th>Score</th>
+<th>Date</th>
+</tr>
+
+{% for d in data %}
+
+<tr>
+<td>{{d[0]}}</td>
+<td>{{d[1]}}</td>
+<td>{{d[2]}}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<a href="/">Home</a>
+
+</body>
+</html>
