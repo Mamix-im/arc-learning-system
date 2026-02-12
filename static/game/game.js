@@ -2,13 +2,13 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 
-// ---------- RESPONSIVE CANVAS ----------
+// ----------------- RESPONSIVE CANVAS -----------------
 
-function resize(){
+function resizeCanvas(){
 
-  if(window.innerWidth < 768){
+  if(window.innerWidth < 800){
 
-    canvas.width = window.innerWidth - 20;
+    canvas.width = window.innerWidth - 10;
     canvas.height = window.innerHeight - 120;
 
   }else{
@@ -18,16 +18,16 @@ function resize(){
   }
 }
 
-resize();
-window.addEventListener("resize", resize);
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
 
-// ---------- USER ----------
+// ----------------- USER -----------------
 
 const username = document.getElementById("username").value;
 
 
-// ---------- AUDIO ----------
+// ----------------- AUDIO -----------------
 
 const music = new Audio("/static/game/sound/saiyarmori.mp3");
 const gameOverSound = new Audio("/static/game/sound/wl.mp3");
@@ -35,7 +35,7 @@ const gameOverSound = new Audio("/static/game/sound/wl.mp3");
 music.loop = true;
 
 
-// ---------- IMAGES ----------
+// ----------------- IMAGES -----------------
 
 const faceImg = new Image();
 faceImg.src = "/static/game/vinit-removeb.png";
@@ -44,29 +44,29 @@ const pipeImg = new Image();
 pipeImg.src = "/static/game/cigarette.png";
 
 
-// ---------- PLAYER ----------
+// ----------------- PLAYER -----------------
 
 let bird = {
   x:150,
   y:200,
-  size:60,
+  size:55,
   gravity:0.45,
   lift:-9,
   velocity:0
 };
 
 
-// ---------- GAME DATA ----------
+// ----------------- GAME DATA -----------------
 
 let pipes = [];
-let gap = 200;
+let gap = 190;
 let frame = 0;
 let score = 0;
 let gameOver = false;
 let musicStarted = false;
 
 
-// ---------- CONTROL ----------
+// ----------------- CONTROL -----------------
 
 function jump(){
 
@@ -83,21 +83,30 @@ function jump(){
 }
 
 
-document.addEventListener("touchstart", jump);
+// MOBILE TOUCH FIX
+document.addEventListener("touchstart", function(e){
+
+  e.preventDefault();
+  jump();
+
+},{passive:false});
+
+
+// KEYBOARD
 document.addEventListener("keydown", e=>{
 
   if(e.code==="Space"){
+
     if(gameOver){
       resetGame();
     }else{
       jump();
     }
   }
-
 });
 
 
-// ---------- PIPE ----------
+// ----------------- PIPE -----------------
 
 function createPipe(){
 
@@ -110,13 +119,13 @@ function createPipe(){
     x:canvas.width,
     top:top,
     bottom:top+gap,
-    width:60,
+    width:55,
     passed:false
   });
 }
 
 
-// ---------- RESET ----------
+// ----------------- RESET -----------------
 
 function resetGame(){
 
@@ -133,7 +142,7 @@ function resetGame(){
 }
 
 
-// ---------- SAVE SCORE ----------
+// ----------------- SAVE SCORE -----------------
 
 function saveScore(){
 
@@ -147,7 +156,7 @@ function saveScore(){
 }
 
 
-// ---------- MAIN LOOP ----------
+// ----------------- MAIN LOOP -----------------
 
 function animate(){
 
@@ -159,7 +168,7 @@ function animate(){
   bird.y += bird.velocity;
 
 
-  // Draw player
+  // Draw Player
   ctx.drawImage(
     faceImg,
     bird.x-bird.size/2,
@@ -169,7 +178,7 @@ function animate(){
   );
 
 
-  // Create pipes
+  // Create Pipes
   if(frame%120===0){
     createPipe();
   }
@@ -179,7 +188,8 @@ function animate(){
 
     p.x -= 3;
 
-    // Top
+
+    // Top Pipe
     ctx.save();
 
     ctx.translate(p.x+p.width/2, p.top/2);
@@ -196,7 +206,7 @@ function animate(){
     ctx.restore();
 
 
-    // Bottom
+    // Bottom Pipe
     ctx.drawImage(
       pipeImg,
       p.x,
@@ -212,8 +222,8 @@ function animate(){
     let birdT = bird.y-bird.size/2+8;
     let birdB = bird.y+bird.size/2-8;
 
-    let pipeL = p.x+15;
-    let pipeR = p.x+p.width-15;
+    let pipeL = p.x+12;
+    let pipeR = p.x+p.width-12;
 
 
     if(
@@ -263,13 +273,15 @@ function animate(){
   // UI
   ctx.fillStyle="black";
   ctx.font="20px Arial";
+
   ctx.fillText("Score: "+score,15,30);
 
 
+  // Game Over Screen
   if(gameOver){
 
     ctx.fillStyle="red";
-    ctx.font="36px Arial";
+    ctx.font="34px Arial";
 
     ctx.fillText(
       "GAME OVER",
@@ -295,6 +307,6 @@ function animate(){
 }
 
 
-// ---------- START ----------
+// ----------------- START -----------------
 
 animate();
