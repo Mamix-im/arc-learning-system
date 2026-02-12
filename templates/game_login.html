@@ -1,16 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Start Game</title>
+
+<style>
+
+body{
+  margin:0;
+  height:100vh;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background:#111;
+  color:white;
+  font-family:Arial;
+}
+
+.box{
+  width:90%;
+  max-width:400px;
+
+  background:#222;
+  padding:25px;
+
+  border-radius:12px;
+  text-align:center;
+}
+
+input{
+  width:100%;
+  padding:14px;
+
+  font-size:18px;
+
+  border:none;
+  border-radius:6px;
+  margin:15px 0;
+}
+
+button{
+  width:100%;
+  padding:14px;
+
+  font-size:18px;
+
+  background:red;
+  color:white;
+
+  border:none;
+  border-radius:6px;
+}
+
+</style>
+
+</head>
+
+
 <body>
+
+<div class="box">
 
 <h2>Enter Your Name</h2>
 
 <form method="post">
 
-<input type="text" name="username" required>
+<input type="text"
+name="username"
+placeholder="Your Name"
+required>
 
 <button>Start Game</button>
 
 </form>
+
+</div>
 
 </body>
 </html>

@@ -2,14 +2,14 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 
-// ----------------- RESPONSIVE CANVAS -----------------
+// ---------------- RESPONSIVE CANVAS ----------------
 
 function resizeCanvas(){
 
   if(window.innerWidth < 800){
 
     canvas.width = window.innerWidth - 10;
-    canvas.height = window.innerHeight - 120;
+    canvas.height = window.innerHeight - 100;
 
   }else{
 
@@ -22,12 +22,12 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
 
-// ----------------- USER -----------------
+// ---------------- USER ----------------
 
 const username = document.getElementById("username").value;
 
 
-// ----------------- AUDIO -----------------
+// ---------------- AUDIO ----------------
 
 const music = new Audio("/static/game/sound/saiyarmori.mp3");
 const gameOverSound = new Audio("/static/game/sound/wl.mp3");
@@ -35,7 +35,7 @@ const gameOverSound = new Audio("/static/game/sound/wl.mp3");
 music.loop = true;
 
 
-// ----------------- IMAGES -----------------
+// ---------------- IMAGES ----------------
 
 const faceImg = new Image();
 faceImg.src = "/static/game/vinit-removeb.png";
@@ -44,7 +44,7 @@ const pipeImg = new Image();
 pipeImg.src = "/static/game/cigarette.png";
 
 
-// ----------------- PLAYER -----------------
+// ---------------- PLAYER ----------------
 
 let bird = {
   x:150,
@@ -56,7 +56,7 @@ let bird = {
 };
 
 
-// ----------------- GAME DATA -----------------
+// ---------------- GAME DATA ----------------
 
 let pipes = [];
 let gap = 190;
@@ -64,9 +64,10 @@ let frame = 0;
 let score = 0;
 let gameOver = false;
 let musicStarted = false;
+let scoreSaved = false;
 
 
-// ----------------- CONTROL -----------------
+// ---------------- CONTROL ----------------
 
 function jump(){
 
@@ -83,11 +84,24 @@ function jump(){
 }
 
 
-// MOBILE TOUCH FIX
+function handleInput(){
+
+  if(gameOver){
+
+    resetGame();
+
+  }else{
+
+    jump();
+  }
+}
+
+
+// MOBILE
 document.addEventListener("touchstart", function(e){
 
   e.preventDefault();
-  jump();
+  handleInput();
 
 },{passive:false});
 
@@ -96,17 +110,13 @@ document.addEventListener("touchstart", function(e){
 document.addEventListener("keydown", e=>{
 
   if(e.code==="Space"){
-
-    if(gameOver){
-      resetGame();
-    }else{
-      jump();
-    }
+    handleInput();
   }
+
 });
 
 
-// ----------------- PIPE -----------------
+// ---------------- PIPE ----------------
 
 function createPipe(){
 
@@ -125,7 +135,7 @@ function createPipe(){
 }
 
 
-// ----------------- RESET -----------------
+// ---------------- RESET ----------------
 
 function resetGame(){
 
@@ -137,14 +147,19 @@ function resetGame(){
   score = 0;
 
   gameOver = false;
+  scoreSaved = false;
 
   animate();
 }
 
 
-// ----------------- SAVE SCORE -----------------
+// ---------------- SAVE SCORE ----------------
 
 function saveScore(){
+
+  if(scoreSaved) return;
+
+  scoreSaved = true;
 
   fetch("/save_score",{
     method:"POST",
@@ -156,7 +171,7 @@ function saveScore(){
 }
 
 
-// ----------------- MAIN LOOP -----------------
+// ---------------- MAIN LOOP ----------------
 
 function animate(){
 
@@ -277,7 +292,7 @@ function animate(){
   ctx.fillText("Score: "+score,15,30);
 
 
-  // Game Over Screen
+  // Game Over
   if(gameOver){
 
     ctx.fillStyle="red";
@@ -307,6 +322,6 @@ function animate(){
 }
 
 
-// ----------------- START -----------------
+// ---------------- START ----------------
 
 animate();
