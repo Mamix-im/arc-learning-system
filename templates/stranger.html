@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ARC Home</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+  <div class="logo stranger-logo">
+    ARC<br>
+    <span>SYSTEM</span>
+  </div>
+
+  <ul class="menu">
+    <li><a href="/" style="color:inherit;text-decoration:none">Home</a></li>
+    <li><a href="/ai" style="color:inherit;text-decoration:none">AI</a></li>
+    <li><a href="/learn" style="color:inherit;text-decoration:none">Learn</a></li>
+  </ul>
+
+</nav>
+
+
+<div class="container">
+
+  <img src="{{ url_for('static', filename='img/900875.jpg') }}" class="front" />
+
+  <div class="text-left">
+    <h1>ARC SYSTEM</h1>
+
+    <p class="subtitle">
+      Your personal AI powered learning and growth platform.
+      Build skills. Track progress. Stay consistent. Win in life.
+    </p>
+  </div>
+
+
+  <div class="text-right">
+    <h2>FOCUS MODE</h2>
+  </div>
+
+
+  <div class="reveal"></div>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

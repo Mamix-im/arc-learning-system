@@ -1,25 +1,149 @@
-body{
-  font-family: Arial;
-  background:#eef2f7;
-  text-align:center;
+body {
+  margin: 0;
+  background: black;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
 }
 
-input, textarea, select{
-  width:300px;
-  padding:8px;
+
+/* NAVBAR */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 66px;
+  padding: 0 30px;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: rgba(46, 57, 58, 0.55);
+  backdrop-filter: blur(2px);
+
+  z-index: 10;
 }
 
-button{
-  padding:10px 20px;
-  margin:10px;
+
+.logo {
+  color: red;
+  font-weight: bold;
+  letter-spacing: 2px;
 }
 
-table{
-  margin:auto;
-  border-collapse:collapse;
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 25px;
 }
 
-td, th{
-  border:1px solid black;
-  padding:6px;
+
+.menu li {
+  color: white;
+  cursor: pointer;
+}
+
+
+.menu li:hover {
+  color: red;
+}
+
+
+
+/* MAIN */
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+
+.front {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.reveal {
+  position: absolute;
+  inset: 0;
+  background: url("/static/img/peakpx.jpg") center / cover no-repeat;
+
+  filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.35))
+          drop-shadow(0 0 50px rgba(255, 0, 0, 0.25));
+
+  pointer-events: none;
+}
+
+
+
+/* TEXT LEFT */
+
+.text-left {
+  position: absolute;
+  top: 60%;
+  left: 3%;
+  color: #ff3b3b;
+  z-index: 5;
+}
+
+
+.text-left h1 {
+  font-size: 56px;
+  margin: 0;
+}
+
+
+.subtitle {
+  margin-top: 8px;
+  font-size: 17px;
+  max-width: 600px;
+  border-top: 2px solid white;
+  padding-top: 6px;
+}
+
+
+
+/* TEXT RIGHT */
+
+.text-right {
+  position: absolute;
+  right: 6%;
+  bottom: 22%;
+  color: white;
+  z-index: 5;
+}
+
+
+.text-right h2 {
+  font-size: 36px;
+  border-bottom: 2px solid red;
+}
+
+
+
+/* LOGO */
+
+.stranger-logo {
+  font-family: 'Libre Baskerville', serif;
+  color: #df0b15;
+  font-size: 22px;
+  line-height: 1.1;
+  letter-spacing: 2px;
+  text-align: center;
+  position: relative;
+}
+
+
+.stranger-logo span {
+  font-size: 26px;
+  display: block;
 }
