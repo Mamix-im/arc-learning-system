@@ -1,6 +1,9 @@
+import os
 from openai import OpenAI
-from config import API_KEY
 
+
+# Render environment se API key lo
+API_KEY = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=API_KEY)
 
@@ -26,6 +29,10 @@ def demo_ai(q):
 
 def ask_ai(question):
 
+    # Safety check
+    if not API_KEY:
+        return "API key missing. Check Render settings."
+
     try:
         response = client.chat.completions.create(
             model="gpt-4.1-mini",
@@ -39,6 +46,4 @@ def ask_ai(question):
         return response.choices[0].message.content
 
     except Exception:
-        # Agar API fail ho jaaye → demo use karo
         return demo_ai(question)
-
