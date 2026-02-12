@@ -1,26 +1,25 @@
 import sqlite3
 
-# Database connect karo (file create hogi)
-conn = sqlite3.connect("arc.db")
 
-# Cursor = command dene ka tool
-cur = conn.cursor()
+def init_db():
 
-# Table banana
-cur.execute("""
-CREATE TABLE IF NOT EXISTS learning (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    topic TEXT,
-    status TEXT,
-    note TEXT,
-    date TEXT
-)
-""")
+    conn = sqlite3.connect("arc.db")
+    cur = conn.cursor()
 
-# Save changes
-conn.commit()
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS learning (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        topic TEXT,
+        status TEXT,
+        note TEXT,
+        date TEXT
+    )
+    """)
 
-# Close connection
-conn.close()
+    conn.commit()
+    conn.close()
 
-print("Learning Database Ready")
+
+if __name__ == "__main__":
+    init_db()
+    print("Database initialized successfully!")

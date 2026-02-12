@@ -1,3 +1,7 @@
+from database import init_db
+
+init_db()
+
 from ai_engine import ask_ai
 
 from flask import Flask, render_template, request, redirect
@@ -84,4 +88,8 @@ def learn():
 
 if __name__ == "__main__":
     print("ARC Learning System Running...")
-    app.run(debug=True)
+    import os
+
+port = int(os.environ.get("PORT", 10000))
+app.run(host="0.0.0.0", port=port)
+
